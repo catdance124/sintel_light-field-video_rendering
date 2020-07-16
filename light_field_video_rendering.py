@@ -40,18 +40,18 @@ def capture_light_field(camera, num_cams=(5, 5), baseline=0.1, resume_point=(0, 
     ## initial camera move
     init_location = camera.location.copy()
     print(init_location)
-    move_along_local_axis(camera, ((num_cams[1] // 2 *(-1) -1) * baseline, (num_cams[1] // 2 +1) * baseline, 0))
+    move_along_local_axis(camera, ((num_cams[1] // 2 *(-1)) * baseline, (num_cams[1] // 2) * baseline, 0))
     ## grid camera move
     for iy in range(num_cams[0]):
-        move_along_local_axis(camera, (0, -baseline, 0))
         for ix in range(num_cams[1]):
-            move_along_local_axis(camera, (baseline, 0, 0))
             # rendering
             if not iy*10+ix < resume_point[0]*10+resume_point[1]:
                 print('rendering:', iy, ix)
                 register_output_dir(output_dir + '/{}x{}_baseline{}/{:02d}_{:02d}/'.format(num_cams[1], num_cams[0], baseline, iy, ix))
                 bpy.ops.render.render(animation=True)
+            move_along_local_axis(camera, (baseline, 0, 0))
         move_along_local_axis(camera, (-num_cams[0] * baseline, 0, 0))
+        move_along_local_axis(camera, (0, -baseline, 0))
     camera.location = init_location
 
 capture_light_field(camera=scene.camera, num_cams=(9, 9), baseline=0.05, resume_point=(0, 0))
