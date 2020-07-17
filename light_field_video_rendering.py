@@ -1,6 +1,11 @@
+"""
+This script renders the light field animation.
+This script runs in python v3.1.2 bundled in blender(render25).
+"""
 import bpy
 import mathutils
 import os
+import sys
 
 
 # rendering settings
@@ -39,6 +44,9 @@ def move_along_local_axis(obj, delta_vec=(0.0, 0.0, 0.0)):
 def capture_light_field(camera, num_cams=(5, 5), baseline=0.1, resume_point=(0, 0), end_point=None):
     if end_point is None:
         end_point = (num_cams[0]-1, num_cams[1]-1)
+    print('=============================\n=============================')
+    print('rendering' + str(resume_point) + 'to' + str(end_point))
+    print('=============================\n=============================')
     ## initial camera move
     init_location = camera.location.copy()
     print(init_location)
@@ -57,4 +65,23 @@ def capture_light_field(camera, num_cams=(5, 5), baseline=0.1, resume_point=(0, 
         move_along_local_axis(camera, (0, -baseline, 0))
     camera.location = init_location
 
-capture_light_field(camera=scene.camera, num_cams=(9, 9), baseline=0.05, resume_point=(0, 0))
+
+if '__main__' == __name__:
+    # get args given to python
+    # $.\blender.exe --background --python hoge.py -- --resume_point 0 0 --end_point 3 2
+    #     --> ['--resume_point', '0', '0', '--end_point', '3', '2']
+    argv = sys.argv
+    argv = argv[argv.index('--') + 1:]    # get all args after '--'
+    
+    if '--resume_point' in argv:
+        idx = argv.index('--resume_point')
+        resume_point = (int(argv[idx + 1]), int(argv[idx + 2]))
+    else:
+        resume_point = (0, 0)
+    if '--end_point' in argv:
+        idx = argv.index('--end_point')
+        end_point = (int(argv[idx + 1]), int(argv[idx + 2]))
+    else:
+        end_point = None
+    
+    capture_light_field(camera=scene.camera, num_cams=(9, 9), baseline=0.05, resume_point=resume_point, end_point=end_point)
