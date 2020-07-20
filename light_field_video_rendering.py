@@ -17,8 +17,6 @@ scene.render.antialiasing_samples = '5'
 scene.render.color_mode = 'RGB'
 scene.render.file_format = 'PNG'
 scene.render.fps = 24
-#scene.frame_start = 411
-#scene.frame_end = 415
 
 # output dir settings
 blend_filepath = bpy.data.filepath
@@ -86,5 +84,13 @@ if '__main__' == __name__:
         end_point = (int(argv[idx + 1]), int(argv[idx + 2]))
     else:
         end_point = None
+    
+    if '--frame_start' in argv:
+        idx = argv.index('--frame_start')
+        scene.frame_start = int(argv[idx + 1])
+    if '--frame_end' in argv:
+        idx = argv.index('--frame_end')
+        scene.frame_end = int(argv[idx + 1])
+    print(scene.frame_start, scene.frame_end)
     
     capture_light_field(camera=scene.camera, num_cams=(9, 9), baseline=0.05, resume_point=resume_point, end_point=end_point)
