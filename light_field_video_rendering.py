@@ -57,6 +57,9 @@ def capture_light_field(camera, num_cams=(5, 5), baseline=0.1, resume_point=(0, 
             # rendering
             if (not iy*10+ix < resume_point[0]*10+resume_point[1]) \
                 and (not iy*10+ix > end_point[0]*10+end_point[1]):
+                for node in scene.nodetree.nodes:
+                    if 'File Output' in node.name:
+                        node.filepath = output_dir + '/{}x{}_baseline{}/{:02d}_{:02d}/Z'.format(num_cams[1], num_cams[0], baseline, iy, ix)
                 print('rendering:', iy, ix)
                 register_output_dir(output_dir + '/{}x{}_baseline{}/{:02d}_{:02d}/'.format(num_cams[1], num_cams[0], baseline, iy, ix))
                 bpy.ops.render.render(animation=True)
