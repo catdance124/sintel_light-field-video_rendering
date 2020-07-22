@@ -21,7 +21,8 @@ scene.render.color_mode = 'RGB'
 for mat in bpy.data.materials:
     if mat.alpha < 1:
         print(mat.name)
-        mat.alpha = 1.0
+        if not 'eye' in mat.name:
+            mat.alpha = 1.0
         for ts in mat.texture_slots:
             if ts is not None:
                 ts.map_alpha = False
