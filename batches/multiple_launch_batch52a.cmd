@@ -1,13 +1,13 @@
 ::This is a batch script for launching multiple Blenders.
 ::    > .\run_batch.cmd
-::    "../clean_files/scenes/05.2_bamboo/05.2b_comp.blend"
+::    "../clean_files/scenes/05.2_bamboo/05.2a_comp.blend"
 
 @echo off
 cd ..
-set file_path="../clean_files/scenes/05.2_bamboo/05.2b_comp.blend"
+set file_path="../clean_files/scenes/05.2_bamboo/05.2a_comp.blend"
 echo %file_path%
-set start_frame=81
-set end_frame=130
+set start_frame=21
+set end_frame=70
 
 start "0" python .\run_blender.py %file_path% -resume "0 0" -end "0 8" -fs %start_frame% -fe %end_frame%
 start "1" python .\run_blender.py %file_path% -resume "1 0" -end "1 8" -fs %start_frame% -fe %end_frame%

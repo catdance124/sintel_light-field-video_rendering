@@ -4,10 +4,10 @@
 
 @echo off
 cd ..
-set file_path="../clean_files/scenes/05.2_bamboo/05.2b_comp.blend"
+set file_path="../clean_files/scenes/03.2_bandaging/03.2e_comp.blend"
 echo %file_path%
-set start_frame=81
-set end_frame=130
+set start_frame=2
+set end_frame=51
 
 start "0" python .\run_blender.py %file_path% -resume "0 0" -end "0 8" -fs %start_frame% -fe %end_frame%
 start "1" python .\run_blender.py %file_path% -resume "1 0" -end "1 8" -fs %start_frame% -fe %end_frame%
