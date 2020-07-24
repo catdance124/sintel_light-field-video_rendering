@@ -4,6 +4,7 @@ $ python .\run_blender.py '../clean_files/scenes/07.2_intothecave/07.2b_comp.ble
 """
 import subprocess
 import argparse
+import time
 
 
 def render(scene_file_path, resume_point='0 0', end_point='8 8', frame_start=None, frame_end=None):
@@ -30,4 +31,6 @@ if '__main__' == __name__:
     parser.add_argument('-fe', '--frame_end', default=None)
     args = parser.parse_args()
 
-    render(args.scene_file_path, args.resume_point, args.end_point, args.frame_start, args.frame_end)
+    for n in range(15):
+        render(args.scene_file_path, args.resume_point, args.end_point, args.frame_start, args.frame_end)
+        time.sleep(30)

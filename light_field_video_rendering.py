@@ -23,7 +23,6 @@ scene.render.fps = 24
 for mat in bpy.data.materials:
     if mat.alpha < 1:
         print(mat.name)
-        mat.transparency = False
         if not 'eye' in mat.name:
             mat.alpha = 1.0
         for ts in mat.texture_slots:
