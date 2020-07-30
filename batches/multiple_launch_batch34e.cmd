@@ -4,13 +4,12 @@
 
 @echo off
 cd ..
-set file_path="../clean_files/scenes/02_shaman/02.b_comp.blend"
+set file_path="../clean_files/scenes/03.4_chickenrun/03.4e_comp.blend"
 echo %file_path%
-set start_frame=191
-set end_frame=240
+set start_frame=190
+set end_frame=239
 
-start "02_shaman,02.b_comp" python .\run_blender.py %file_path% -resume "0 0" -end "8 8" -fs %start_frame% -fe %end_frame%
-REM start "02_shaman,02.b_comp rest" python .\run_blender.py %file_path% -resume "2 4" -end "2 8" -fs %start_frame% -fe %end_frame%
+start "03.4_chickenrun,03.4e_comp" python .\run_blender.py %file_path% -resume "0 0" -end "8 8" -fs %start_frame% -fe %end_frame%
 REM start "1" python .\run_blender.py %file_path% -resume "1 0" -end "1 8" -fs %start_frame% -fe %end_frame%
 REM start "2" python .\run_blender.py %file_path% -resume "2 0" -end "2 8" -fs %start_frame% -fe %end_frame%
 REM start "3" python .\run_blender.py %file_path% -resume "3 0" -end "3 8" -fs %start_frame% -fe %end_frame%
