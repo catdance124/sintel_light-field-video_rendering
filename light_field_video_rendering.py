@@ -59,7 +59,7 @@ def capture_light_field(camera, num_cams=(5, 5), baseline=0.1, resume_point=(0, 
     ## initial camera move
     init_location = camera.location.copy()
     print(init_location)
-    move_along_local_axis(camera, ((num_cams[1] // 2 *(-1)) * baseline, (num_cams[1] // 2) * baseline, 0))
+    move_along_local_axis(camera, ((num_cams[1] // 2 *(-1)) * baseline, (num_cams[0] // 2) * baseline, 0))
     ## grid camera move
     for iy in range(num_cams[0]):
         for ix in range(num_cams[1]):
@@ -84,7 +84,7 @@ def capture_light_field(camera, num_cams=(5, 5), baseline=0.1, resume_point=(0, 
                 if len(png_list) != 0 and len(exr_list) != 0:
                     scene.frame_start = temp
             move_along_local_axis(camera, (baseline, 0, 0))
-        move_along_local_axis(camera, (-num_cams[0] * baseline, 0, 0))
+        move_along_local_axis(camera, (-num_cams[1] * baseline, 0, 0))
         move_along_local_axis(camera, (0, -baseline, 0))
     camera.location = init_location
 
