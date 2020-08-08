@@ -50,16 +50,17 @@ def move_along_local_axis(obj, delta_vec=(0.0, 0.0, 0.0)):
     # vec aligned to local axis
     obj.location += delta_vec * inv
 
-def capture_light_field(camera, num_cams=(5, 5), baseline=0.1, resume_point=(0, 0), end_point=None):
+def capture_light_field(camera, num_cams=(5, 5), baseline=0.1, resume_point=(0, 0), end_point=None, cams_offset=(0, 0)):
     if end_point is None:
         end_point = (num_cams[0]-1, num_cams[1]-1)
     print('=============================\n=============================')
     print('rendering' + str(resume_point) + 'to' + str(end_point))
+    print('cams_offset' + str(cams_offset))
     print('=============================\n=============================')
     ## initial camera move
     init_location = camera.location.copy()
     print(init_location)
-    move_along_local_axis(camera, ((num_cams[1] // 2 *(-1)) * baseline, (num_cams[0] // 2) * baseline, 0))
+    move_along_local_axis(camera, ((num_cams[1] // 2 *(-1) - cams_offset[1]) * baseline, (num_cams[0] // 2 + cams_offset[0]) * baseline, 0))
     ## grid camera move
     for iy in range(num_cams[0]):
         for ix in range(num_cams[1]):
@@ -114,5 +115,11 @@ if '__main__' == __name__:
         idx = argv.index('--frame_end')
         scene.frame_end = int(argv[idx + 1])
     print(scene.frame_start, scene.frame_end)
+
+    if '--cams_offset' in argv:
+        idx = argv.index('--cams_offset')
+        cams_offset = (int(argv[idx + 1]), int(argv[idx + 2]))
+    else:
+        cams_offset = (0, 0)
     
-    capture_light_field(camera=scene.camera, num_cams=(9, 9), baseline=0.01, resume_point=resume_point, end_point=end_point)
+    capture_light_field(camera=scene.camera, num_cams=(9, 9), baseline=0.01, resume_point=resume_point, end_point=end_point, cams_offset=cams_offset)

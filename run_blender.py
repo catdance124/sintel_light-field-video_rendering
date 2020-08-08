@@ -6,13 +6,14 @@ import subprocess
 import argparse
 
 
-def render(scene_file_path, resume_point='0 0', end_point='8 8', frame_start=None, frame_end=None):
+def render(scene_file_path, resume_point='0 0', end_point='8 8', frame_start=None, frame_end=None, cams_offset='0 0'):
     cmd = r'..\render25_win64\blender.exe' + \
         f' --background {scene_file_path}' + \
         r' --python .\light_field_video_rendering.py' + \
         ' --' + \
         f' --resume_point {resume_point}' + \
-        f' --end_point {end_point}'
+        f' --end_point {end_point}' + \
+        f' --cams_offset {cams_offset}'
     if frame_start is not None:
         cmd += f' --frame_start {frame_start}'
     if frame_end is not None:
@@ -28,7 +29,8 @@ if '__main__' == __name__:
     parser.add_argument('-end', '--end_point', default='8 8')
     parser.add_argument('-fs', '--frame_start', default=None)
     parser.add_argument('-fe', '--frame_end', default=None)
+    parser.add_argument('-offset', '--cams_offset', default='0 0')
     args = parser.parse_args()
 
     for n in range(50):
-        render(args.scene_file_path, args.resume_point, args.end_point, args.frame_start, args.frame_end)
+        render(args.scene_file_path, args.resume_point, args.end_point, args.frame_start, args.frame_end, args.cams_offset)
