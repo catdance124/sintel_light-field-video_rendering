@@ -75,11 +75,13 @@ def capture_light_field(camera, num_cams=(5, 5), baseline=0.1, resume_point=(0, 
                 # Get the completed frame
                 png_list = glob.glob(current_output_dir + '*.png')
                 exr_list = glob.glob(current_output_dir + '*.exr')
+                true_frame_start = scene.frame_start    # Since scene.frame_start cannot have a larger value than scene.frame_end, use the variable true_frame_start instead.
                 if len(png_list) != 0 and len(exr_list) != 0:
                     completed_frame = min(int(png_list[-1][-8:-4]), int(exr_list[-1][-8:-4]))
-                    scene.frame_start, temp = completed_frame+1, scene.frame_start
+                    true_frame_start = completed_frame+1
+                    scene.frame_start, temp = true_frame_start, scene.frame_start
                 print('START:'+str(scene.frame_start)+', END:'+str(scene.frame_end))
-                if scene.frame_start < scene.frame_end:
+                if true_frame_start <= scene.frame_end:
                     print('rendering:', iy, ix)
                     bpy.ops.render.render(animation=True)
                 if len(png_list) != 0 and len(exr_list) != 0:
