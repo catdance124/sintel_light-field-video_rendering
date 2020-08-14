@@ -5,6 +5,7 @@ blender_script
 Sintelのシーンプロダクションファイル(.blend)からlight field videoをレンダリングするためのスクリプト
 
 # env?
+windows10  
 Blender ... render25 ブランチ [ここ](https://download.blender.org/durian/blender/)から落としてくる  
 python v3.6.5  
 numpy==1.14.3+mkl  
@@ -14,22 +15,22 @@ Pillow==5.3.0
 # how work this?
 (B) ... Blender内（python3.1）で動作させることを考えて書いたコード  
 (C) ... コンソール（python3.6）で動作させることを考えて書いたコード  
-- light_field_video_rendering.py(B)
+- [light_field_video_rendering.py](light_field_video_rendering.py)(B)
     - カメラを動かしてanimation renderingを行うメインスクリプト．Blender内のエディタに直接記述しても動作するが，Blenderの--pyton引数にこのスクリプトを与えて動作させる．
-- run_blender.py(C)
+- [run_blender.py](run_blender.py)(C)
     - light_field_video_rendering.pyにいい感じの引数を与えてBlenderにレンダリングさせるためのスクリプト．python bundled in blenderを呼び出すためのラッパー的なポジション
-- batches/*.cmd
+- [batches/*.cmd](batches)
     - 各シーンファイルの設定が書かれたスクリプト．中でrun_blender.pyを呼び出す．書き方によっては一度で複数視点を同時にレンダリングし，CPUをフル活用することもできる．
 - 小ツール的なサブスクリプト
-    - generate_clean_file.py(B)
+    - [generate_clean_file.py](generate_clean_file.py)(B)
         - cleanレンダリングを行うための設定を一括で行う．（透過オフ，解像度固定，レイヤーの畳み込みなどの設定）基本的に各ファイル一度のみBlender内のプロンプトから実行し，保存する．
-    - get_focal_length.py(B)
+    - [get_focal_length.py](get_focal_length.py)(B)
         - カメラの焦点距離を標準出力するスクリプト
-    - check_error_files.py(C)
+    - [check_error_files.py](check_error_files.py)(C)
         - 他のすべてのビューと比較して問題のあるビュー (例: 一部のオブジェクトがブラックアウトされている) を検出するスクリプト
-    - organize_rendering_data.py(C)
+    - [organize_rendering_data.py](organize_rendering_data.py)(C)
         - EXR(depth)->npy(disparity)に変換するスクリプト．現在は水平垂直十字視点のみ処理する．
-        - readEXR.py
+        - [readEXR.py](readEXR.py)
             - EXRファイルを読み込む
 
 # what is the structure of the file?
@@ -59,9 +60,22 @@ Sintel/
 (cmd root)> mklink /D .\sintel\clean_files S:clean_files
 ```
 
+
+# timeline
+データセット作成の時系列作業メモ  
+レンダリングに関する作業は[ここ](https://docs.google.com/spreadsheets/d/1L9ZVGB_6EjVpHKJBAojlOixZthO2Pd0NFOCK6JKR3Hk/edit?usp=sharing)に残している．
+1. オリジナルのSintelプロダクションファイルを落としてくる
+1. プロダクションファイルを[generate_clean_file.py](generate_clean_file.py)を使って編集する．ノードネットワークなどは手動で編集する．
+1. [run_blender.py](run_blender.py)を使ってLFをレンダリングする．バッチ化したスクリプトで実行した．
+1. [organize_rendering_data.py](organize_rendering_data.py)を使ってdepthデータをdisparityデータに変換する．
+    1. その際に，焦点距離が必要となるので，[get_focal_length.py](get_focal_length.py)を使って取得しておき，[focal_length.csv](focal_length.csv)として保存しておく．
+1. 問題のあるデータを[check_error_files.py](check_error_files.py)で検出し控えておく．使用するデータに問題がある場合は，除外するか個別に再レンダリングを施す．
+
+
 # error files
 check_error_files.pyにより検出したもの．  
 XX_04, 04_XX視点のみエラーファイルの除去を手動で行った．
+エラーファイルの関係により，03.4_chickenrun/03.4b_comp，06_shaman_b/06.e_compはすべて使用していない．
 ```
 ../rendering/clean/02_shaman/02.f_comp/9x9_baseline0.01/03_01/0505.png
 ../rendering/clean/02_shaman/02.f_comp/9x9_baseline0.01/05_04/0502.png
